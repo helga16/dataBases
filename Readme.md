@@ -25,3 +25,11 @@ select pr.name as brand, count(product_id) as product_names from producers pr le
 --выводим кол-во наименований товаров в брендах, отсортировывая по кол-ву наименований в обратном порядке;
 
 select pr.name as brand, count(product_id) as product_names from producers pr left join product_producer using (producer_id) left join products using(product_id) group by pr.name order by product_names desc;
+
+//Добавлено 28.02 запросы с group_concat;
+--выводим товары с категориями
+select p.name as product, group_concat(distinct cat.name separator "/ ") as category from products p left join product_category on(p.product_id=product_category.product_id) left join categories cat using(category_id) group by product;
+
+--выводим товары с категориями и количеством заказов
+
+select p.name as product, group_concat(distinct cat.name separator "/ ") as category, count(distinct o.order_id) as orders from products p left join product_category on(p.product_id=product_category.product_id) left join categories cat using(category_id) left join product_order o on(p.product_id = o.product_id) group by p.product_id;
