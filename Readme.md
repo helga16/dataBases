@@ -33,3 +33,7 @@ select p.name as product, group_concat(distinct cat.name separator "/ ") as cate
 --выводим товары с категориями и количеством заказов
 
 select p.name as product, group_concat(distinct cat.name separator "/ ") as category, count(distinct o.order_id) as orders from products p left join product_category on(p.product_id=product_category.product_id) left join categories cat using(category_id) left join product_order o on(p.product_id = o.product_id) group by p.product_id;
+
+--выводит все + производителя
+
+select p.name as product, group_concat(distinct cat.name separator "/ ") as category, group_concat(distinct pr.name)as producer, count(distinct o.order_id) as orders from products p left join product_category on(p.product_id=product_category.product_id) left join categories cat using(category_id) left join product_order o on(p.product_id = o.product_id) left join product_producer on(product_producer.product_id = p.product_id) left join producers pr using(producer_id) group by p.product_id;
